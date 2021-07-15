@@ -74,8 +74,17 @@ class TestLinkedList(unittest.TestCase):
 
     def test_remove(self):
         
+        self._linked_lst.insert(Item(1, 'a'))
+        self._linked_lst.insert(Item(2, 'b'))
+        self._linked_lst.insert(Item(3, 'c'))
         self._linked_lst.remove(2)
         self.assertEqual(repr(self._linked_lst), '(id : 1, value : a)-->(id : 3, value : c)')
+        self._linked_lst.remove(1)
+        self.assertEqual(repr(self._linked_lst), '(id : 3, value : c)')
+        self._linked_lst.remove(3)
+        self.assertEqual(repr(self._linked_lst), None)
+
+
 
 if __name__ == '__main__':
     unittest.main()
