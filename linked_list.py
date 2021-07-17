@@ -19,6 +19,8 @@ class LinkedList():
         
         self._head = None
         self._tail = None
+        self._lenght = 0
+        self._searched_item = None
 
     def __repr__(self) -> str:
         
@@ -38,26 +40,66 @@ class LinkedList():
         else:
             self._tail._next = item
             self._tail = item
+        
+        self._lenght += 1
+        
             
+    def lenght(self) -> int:
+        if self._head != None:
+            crr_item = self._head
+            count = 0
+            while crr_item != None:
+                count += 1
+                crr_item = crr_item._next
+            return count
+        else:
+            return 0
+
+    def find(self, id : int) -> bool:
+        if self._lenght == 0:
+            return False
+        else:
+            crr_item = self._head
+            while crr_item != None:
+                if crr_item._id == id:
+                    return True
+                else:
+                    crr_item = crr_item._next
+            return False
+
     def remove(self, id : int) -> None:
         
-        if self._head != None:
+        if self._lenght == 0:
+            return None
+        elif self._lenght == 1:
+            item_to_remove = self._head
+            self._head = None
+            self._tail = None
+            del item_to_remove
+            self._lenght -= 1
+        else:
             item_to_remove = self._head
             previous = None
-            while True:
-                if self._head._id == id:
+            while item_to_remove != None:
+                if item_to_remove._id == id and item_to_remove != self._head:
+                    previous._next = item_to_remove._next
+                    del item_to_remove
+                    self._lenght -= 1
+                    break     
+                elif self._tail._id == id:
+                    self._tail = previous
+                    del item_to_remove
+                    self._lenght -= 1
+                    break
+                elif self._head._id == id:
                     self._head = item_to_remove._next
                     del item_to_remove
-                    break
-                elif item_to_remove._id == id:
-                    previous._next = item_to_remove._next
-                    if item_to_remove._id == self._tail._id:
-                        self._tail = previous
-                    del item_to_remove
+                    self._lenght -= 1
                     break
                 else:
                     previous = item_to_remove
                     item_to_remove = item_to_remove._next
+                    
 
 class TestLinkedList(unittest.TestCase):
 
@@ -72,13 +114,21 @@ class TestLinkedList(unittest.TestCase):
         self._linked_lst.insert(Item(3, 'c'))
         self.assertEqual(repr(self._linked_lst), '(id : 1, value : a)-->(id : 2, value : b)-->(id : 3, value : c)')
 
-    def test_remove(self):
-        
+    def test_lenght(self):
+        self.assertEqual(self._linked_lst.lenght(), 0)
+        self._linked_lst.insert(Item(1, 'a'))
+        self.assertEqual(self._linked_lst.lenght(), 1)
+        self._linked_lst.insert(Item(2, 'b'))
+        self.assertEqual(self._linked_lst.lenght(), 2)
+
+    def test_remove(self):  
         self._linked_lst.insert(Item(1, 'a'))
         self._linked_lst.insert(Item(2, 'b'))
         self._linked_lst.insert(Item(3, 'c'))
         self._linked_lst.remove(2)
         self.assertEqual(repr(self._linked_lst), '(id : 1, value : a)-->(id : 3, value : c)')
+        self._linked_lst.remove(1)
+        self.assertEqual(repr(self._linked_lst), '(id : 3, value : c)')
         self._linked_lst.remove(1)
         self.assertEqual(repr(self._linked_lst), '(id : 3, value : c)')
         self._linked_lst.remove(3)
