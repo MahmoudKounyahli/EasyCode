@@ -24,6 +24,9 @@ class LinkedList():
 
     def __repr__(self) -> str:
         
+        if self._lenght == 0:
+            return "list is empty"
+
         item = self._head
         rep = ""
         if self._head != None:
@@ -32,6 +35,7 @@ class LinkedList():
                 item = item._next
         return rep + repr(item)
 
+    # insert with O(1)
     def insert(self, item : Item) -> None:
         
         if self._head == None:
@@ -43,7 +47,7 @@ class LinkedList():
         
         self._lenght += 1
         
-            
+    # lenght with O(n) in worst case.
     def lenght(self) -> int:
         if self._head != None:
             crr_item = self._head
@@ -54,6 +58,10 @@ class LinkedList():
             return count
         else:
             return 0
+
+    # lenght with O(1)
+    def lenght(self) -> int:
+        return self._lenght
 
     def find(self, id : int) -> bool:
         if self._lenght == 0:
@@ -67,11 +75,12 @@ class LinkedList():
                     crr_item = crr_item._next
             return False
 
+    # remove with O(n) in worst case.
     def remove(self, id : int) -> None:
         
         if self._lenght == 0:
-            return None
-        elif self._lenght == 1:
+            return
+        elif self._lenght == 1 and self._head._id == id:
             item_to_remove = self._head
             self._head = None
             self._tail = None
@@ -80,7 +89,7 @@ class LinkedList():
         else:
             item_to_remove = self._head
             previous = None
-            while item_to_remove != None:
+            while item_to_remove != None: # iteration not yet reached next from last item.
                 if item_to_remove._id == id and item_to_remove != self._head:
                     previous._next = item_to_remove._next
                     del item_to_remove
@@ -132,7 +141,7 @@ class TestLinkedList(unittest.TestCase):
         self._linked_lst.remove(1)
         self.assertEqual(repr(self._linked_lst), '(id : 3, value : c)')
         self._linked_lst.remove(3)
-        self.assertEqual(repr(self._linked_lst), None)
+        self.assertEqual(repr(self._linked_lst), 'list is empty')
 
 
 
