@@ -38,6 +38,9 @@ class Graph():
     def vertexes_num(self):
         return self._vertexes
 
+    def __repr__(self) -> str:
+        pass
+    
     def create_graph(self, txt_file) -> None:
         """
         for example directed graph:
