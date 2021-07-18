@@ -20,7 +20,6 @@ class LinkedList():
         self._head = None
         self._tail = None
         self._lenght = 0
-        self._searched_item = None
 
     def __repr__(self) -> str:
         
