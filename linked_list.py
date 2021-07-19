@@ -15,14 +15,12 @@ class Item():
 
 class LinkedList():
 
-    def __init__(self) -> None:
-        
+    def __init__(self) -> None:    
         self._head = None
         self._tail = None
         self._lenght = 0
 
     def __repr__(self) -> str:
-        
         if self._lenght == 0:
             return "list is empty"
 
@@ -36,7 +34,6 @@ class LinkedList():
 
     # insert with O(1)
     def insert(self, item : Item) -> None:
-        
         if self._head == None:
             self._head = item
             self._tail = item
@@ -45,6 +42,19 @@ class LinkedList():
             self._tail = item
         
         self._lenght += 1
+
+    # return list of ids of linked list with O(n).
+    def ids(self) -> list:
+        ids_lst = []
+        if self._head != None:
+            crr_item = self._head
+            while crr_item != None:
+                ids_lst.append(crr_item._id)
+                crr_item = crr_item._next
+            return ids_lst
+        else:
+            return ids_lst # list is empty.
+
         
     # lenght with O(n) in worst case.
     def lenght(self) -> int:
@@ -75,8 +85,7 @@ class LinkedList():
             return False
 
     # remove with O(n) in worst case.
-    def remove(self, id : int) -> None:
-        
+    def remove(self, id : int) -> None:      
         if self._lenght == 0:
             return
         elif self._lenght == 1 and self._head._id == id:
@@ -141,6 +150,12 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(repr(self._linked_lst), '(id : 3, value : c)')
         self._linked_lst.remove(3)
         self.assertEqual(repr(self._linked_lst), 'list is empty')
+
+    def test_ids(self):
+        self._linked_lst.insert(Item(1, 'a'))
+        self._linked_lst.insert(Item(2, 'b'))
+        self._linked_lst.insert(Item(3, 'c'))
+        self.assertEqual(self._linked_lst.ids(), [1, 2, 3])
 
 
 

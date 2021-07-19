@@ -9,25 +9,34 @@ from linked_list import LinkedList, Item
 
 class ADJList():
 
-    def __init__(self) -> None:
-        
+    def __init__(self) -> None:       
         self._lenght = 0
         self._labels_list = {}
 
-    def add(self, x, y) -> None:
+    def labels(self) -> list:
+        labels = self._labels_list.keys()
+        return labels
 
+    def neighbors(self, x) -> list:     
+        neighbors = self._labels_list[x].ids()
+        return neighbors
+
+    def add(self, x, y) -> None:    
+        neighbor = Item(y, None)
         if x in self._labels_list:
-            self._labels_list[x].insert(Item(y, None))
+            self._labels_list[x].insert(neighbor)
         else:
-            neighbors_lst = LinkedList()
-            neighbors_lst.insert(Item(y, None))
+            neighbors_lst = LinkedList() # init the list of neighbors of x as a linked list.
+            neighbors_lst.insert(neighbor)
             self._labels_list[x] = neighbors_lst
+
+    def __repr__(self) -> str:
+        pass
 
 
 class Graph():
 
     def __init__(self) -> None:
-
         self._edges = 0
         self._vertexes = 0
         self._adj_lst = ADJList()
@@ -39,7 +48,12 @@ class Graph():
         return self._vertexes
 
     def __repr__(self) -> str:
-        pass
+        rep = ""
+        labels = self._adj_lst.labels()
+        for label in labels:
+            neighbors = self._adj_lst[label].ids(label)
+            rep += str(label) + "->" + str(neighbors)
+        return rep
     
     def create_graph(self, txt_file) -> None:
         """
@@ -75,12 +89,13 @@ class TestGraph(unittest.TestCase):
     def setUp(self) -> None:
         self._graph = Graph()
 
-    def test_creat_graph(self):
+    def test_create_graph(self):
         self._graph.create_graph("graph.txt")
         vertexes_num = self._graph.vertexes_num()
         edges_num = self._graph.edges_num()
         self.assertEqual(vertexes_num, 4)
         self.assertEqual(edges_num, 6)
+        #self.assertEqual(repr(self._graph),90)
 
 class TestADJList(unittest.TestCase):
     pass
